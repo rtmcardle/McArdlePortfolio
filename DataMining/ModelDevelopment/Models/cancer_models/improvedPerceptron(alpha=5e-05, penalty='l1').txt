@@ -1,24 +1,31 @@
 Improved Model:
-Score: 0.951048951048951
-Num. Features: 20
-Num. Features: 20
-	+ [radiusStandardError]
+Score: 0.9790209790209791
+Num. Features: 27
+Num. Features: 27
+	+ [radiusMean]
+	+ [radiusLargest]
 	+ [textureMean]
+	+ [textureStandardError]
 	+ [textureLargest]
 	+ [perimeterMean]
 	+ [perimeterStandardError]
 	+ [perimeterLargest]
+	+ [areaMean]
 	+ [areaStandardError]
+	+ [areaLargest]
+	+ [smoothnessMean]
 	+ [smoothnessStandardError]
 	+ [smoothnessLargest]
+	+ [compactnessMean]
 	+ [compactnessStandardError]
 	+ [compactnessLargest]
+	+ [concavityMean]
 	+ [concavityStandardError]
 	+ [concavityLargest]
 	+ [concavePointsMean]
 	+ [concavePointsStandardError]
 	+ [concavePointsLargest]
-	+ [symmetryMean]
 	+ [symmetryLargest]
 	+ [fractalDimensionMean]
 	+ [fractalDimensionStandardError]
+	+ [fractalDimensionLargest]
