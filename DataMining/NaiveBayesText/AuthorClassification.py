@@ -26,10 +26,10 @@ class author_classifier_preprocess:
 
 	def __init__(self):
 
-		self.tagged_works = [] # List of tuples (work,author) for the corpus
-		self.tagged_sequences = [] # List of tuples (sequence,author) for the training set
-		self.corpus = [] # List of text of works
-		self.tagged_test = [] # List of tuples (work,author) for the test set
+		self.tagged_works = []						# List of tuples (work,author) for the corpus
+		self.tagged_sequences = []					# List of tuples (sequence,author) for the training set
+		self.corpus = []							# List of text of works
+		self.tagged_test = []						# List of tuples (work,author) for the test set
 		return
 
 
@@ -252,8 +252,8 @@ def main():
     model."""
 
 	acp = author_classifier_preprocess()
-	text_dir = pathlib.Path("./text/")
-	testing_titles_file = pathlib.Path("./testing_works.txt")
+	text_dir = pathlib.Path("./Data/TextOfWorks/")
+	testing_titles_file = pathlib.Path("./Data/testing_works.txt")
 
 	acp.preprocess(str(text_dir),testing_titles_file,clean=True,removables=['0123456789'], stopwords=[], stem_type=(True,True))
 	acp.tag()
@@ -270,8 +270,8 @@ def find_best_model():
 	recording performance of each model and recommending the 
 	best model found."""
 
-	text_dir = pathlib.Path("./text/")
-	testing_titles_file = pathlib.Path("./testing_works.txt")
+	text_dir = pathlib.Path("./Data/TextOfWorks/")
+	testing_titles_file = pathlib.Path("./Data/testing_works.txt")
 
 	best_acc = 0.0
 
@@ -315,7 +315,7 @@ def find_best_model():
 	print(f"Best Model: {best_model}")
 
 	## Saves a record of the tested models and their accuracies. 
-	with open('record.txt', 'w') as f:
+	with open('Record/record.txt', 'w') as f:
 		f.write(f"Best Model: {best_model}\n\n")
 		for item in record:
 			f.write(f"{item}\n")

@@ -74,7 +74,7 @@ class weather_wrapper:
 		return_frame = return_frame.groupby('day', as_index=True)[attribute].agg(statistics)
 
 		## Prints data frame to an output file.
-		output_file = 'output.txt'
+		output_file = '.\Output\output.txt'
 		with open(output_file, 'w') as f:
 			orig_out = sys.stdout
 			sys.stdout = f
@@ -124,14 +124,14 @@ class weather_wrapper:
 		
 		plt.xticks(rotation=60)
 		plt.tight_layout()
-		plt.savefig('output_fig.png')
+		plt.savefig('.\Output\output_fig.png')
 		plt.show()
 
 
 
 ## The assigned problem. 
 def main():
-	data_file = ".\weather_data_f2020.csv"
+	data_file = ".\Data\weather_data_f2020.csv"
 	w = weather_wrapper()
 	w.read(data_file)
 	df = w.describe("2018-06-06 12:59:59", "2018-06-09 12:59:59", "rfd_2m_wm2")
@@ -141,7 +141,7 @@ def main():
 
 ## The assignment example use case.
 def example():
-	data_file = ".\weather_data_f2020.csv"
+	data_file = ".\Data\weather_data_f2020.csv"
 	w = weather_wrapper()
 	w.read(data_file)
 	df = w.describe("2018-06-06 12:59:59", "2018-06-09 12:59:59", "temp_air_2m_C")
