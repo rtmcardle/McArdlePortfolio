@@ -1,0 +1,7 @@
+Alcott-Lousia May-Little Women.txt
+Austen-Jane-Sense and Sensibility.txt
+Doyle-Arthur Conan-The White Company.txt
+Hawthorne-Nathaniel-The Scarlet Letter.txt
+Kafka-Franz-The Trial.txt
+Melville-Herman-White Jacket.txt
+Wilde-Oscar-The Picture of Dorian Gray.txt

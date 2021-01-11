@@ -1,0 +1,20 @@
+Iterative DLS Solution Path
+
+Action[name==Move Gap Right 1 Seat, state==1 1 1 2 0 2 2 ]
+Action[name==Move Gap Left 3 Seats, state==1 0 1 2 1 2 2 ]
+Action[name==Move Gap Right 2 Seats, state==1 2 1 0 1 2 2 ]
+Action[name==Move Gap Right 3 Seats, state==1 2 1 2 1 2 0 ]
+pathCost : 6.0
+nodesExpanded : 66
+
+
+A* Solution Path
+
+Action[name==Move Gap Left 2 Seats, state==1 0 1 1 2 2 2 ]
+Action[name==Move Gap Right 3 Seats, state==1 2 1 1 0 2 2 ]
+Action[name==Move Gap Left 1 Seat, state==1 2 1 0 1 2 2 ]
+Action[name==Move Gap Right 3 Seats, state==1 2 1 2 1 2 0 ]
+queueSize : 289
+maxQueueSize : 290
+pathCost : 6.0
+nodesExpanded : 93

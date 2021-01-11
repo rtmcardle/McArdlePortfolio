@@ -1,0 +1,11 @@
+
+Iterative DLS Solution Path
+
+Action[name==Fill Three Gallon, state== 0 3 ]
+Action[name==Pour Three into Four, state== 3 0 ]
+Action[name==Fill Three Gallon, state== 3 3 ]
+Action[name==Pour Three into Four, state== 4 2 ]
+Action[name==Empty Four Gallon, state== 0 2 ]
+Action[name==Pour Three into Four, state== 2 0 ]
+pathCost : 6.0
+nodesExpanded : 295

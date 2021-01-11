@@ -1,0 +1,16 @@
+#Visual Studio Solution Folders
+.vs/
+*/.vs/
+
+# Solution and Project Files
+*.sln
+*.pyproj
+
+
+# PyCache Folders
+*/__pycache__/
+*.pyc
+
+
+# Java Class Files
+*.class
