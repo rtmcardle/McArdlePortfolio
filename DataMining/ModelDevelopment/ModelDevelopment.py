@@ -13,6 +13,7 @@ from sklearn.ensemble import BaggingRegressor
 from sklearn.feature_selection import RFECV
 from sklearn.preprocessing import scale
 from joblib import dump,load
+import Config.Binary, Config.Regression
 import pandas as pd
 import numpy as np
 import psutil
@@ -45,55 +46,18 @@ class ModelDevelopment():
 
         self.problem = problem
         if problem == 'cancer':
-            self.file = './HW4/model_dev_data/breast_cancer.csv'
-            self.estimator_list = [LogisticRegression(),
-                                   Perceptron(),
-                                   RandomForestClassifier(),
-                                   ]
-            self.params_list = [{'penalty':['l1','l2','elasticnet','none'],
-                                 'C':[0.5,1.0,1.5],
-                                 'class_weight':[None,'balanced'],
-                                 'solver':['liblinear','newton-cg','lbfgs','sag','saga'],
-                                 }, #LogisticRegression
-                                {'penalty':['l1','l2','elasticnet'],
-                                 'alpha':[0.5e-4,1.0e-4,1.5e-4],
-                                 'class_weight':[None,'balanced'],
-                                 'shuffle':[False,True],
-                                 }, #Perceptron
-                                {'n_estimators':np.arange(25,201,25),
-                                 'criterion':['gini','entropy'],
-                                 'min_samples_split':np.arange(2,23,5),
-                                 'max_features':['sqrt','log2',None],
-                                 'class_weight':[None,'balanced','balanced_subsample'],
-                                 }, #RandomForest
-                                ]
+            self.file = './Data/breast_cancer.csv'
+            self.estimator_list = Config.Binary.estimator_list
+            self.params_list = Config.Binary.params_list
 
         elif problem == 'solar':
-            self.file = './HW4/model_dev_data/solar.csv'
-            self.estimator_list = [LinearRegression(),
-                                   MLPRegressor(max_iter=50000),
-                                   BaggingRegressor(),
-                                   ]
-
-            self.params_list = [{'fit_intercept':[False,True],
-                                 'normalize':[False,True],
-                                 },#LinearRegression
-                                {'activation':['logistic','tanh','relu'],
-                                 'solver': ['lbfgs','sgd','adam'],
-                                 'alpha': [0.5e-4,1.0e-4,1.5e-4],
-                                 'learning_rate': ['constant','adaptive'],
-                                 },#MLPRegressor
-                                {'base_estimator':[LinearRegression()],
-                                 'n_estimators': np.arange(5,26,5),
-                                 'max_samples': np.arange(0.5,1.001,0.1),
-                                 'max_features':np.arange(0.5,1.001,0.1),
-                                 }, #BaggingRegressor
-                                ]
-
+            self.file = './Data/solar.csv'
+            self.estimator_list = Config.Regression.estimator_list
+            self.params_list = Config.Regression.params_list
 
         self.test_size_list = np.arange(0.15,0.6001,0.05)
 
-        self.load_data(self.file)
+        self.load_data(problem)
         self.process_data(problem)
         self.find_best_model(self.estimator_list,self.params_list,self.test_size_list)
 
@@ -107,9 +71,9 @@ class ModelDevelopment():
         """
 
         if problem == 'cancer':
-            self.file = './HW4/model_dev_data/breast_cancer.csv'
+            self.file = './Data/breast_cancer.csv'
         elif problem == 'solar':
-            self.file = './HW4/model_dev_data/solar.csv'
+            self.file = './Data/solar.csv'
         print('Loading Data...')
         self.input_data = pd.read_csv(self.file)
         print('Done')
@@ -125,14 +89,13 @@ class ModelDevelopment():
 
         if problem == 'cancer':
             self.attributes = self.input_data.drop(['ID','diagnosis'],axis=1)
-            self.columns = self.attributes.columns
-            self.attributes = scale(self.attributes)
             self.targets = self.input_data['diagnosis']
         elif problem == 'solar':
             self.attributes = self.input_data.drop(['TIMESTAMP','SOLARRADIATION_0003'],axis=1)
-            self.columns = self.attributes.columns
-            self.attributes = scale(self.attributes)
             self.targets = scale(self.input_data['SOLARRADIATION_0003'])
+
+        self.columns = self.attributes.columns
+        self.attributes = scale(self.attributes)
         return
 
 
@@ -150,7 +113,6 @@ class ModelDevelopment():
         print('Splitting Validation Data..')
         self.att_train, self.att_valid, self.tar_train, self.tar_valid = train_test_split(attr, targ, test_size=test_size, random_state=random)
         print('Done')
-        #return att_train, self.att_valid, tar_train, self.tar_valid
 
 
     def split_test(self,test_size=0.2,random=None):
@@ -177,18 +139,18 @@ class ModelDevelopment():
         :return: the best parameters and their validation score
         """
 
+        # Enables multiple jobs if 4+ processors/threads available
+        available_processors = len(psutil.Process().cpu_affinity())-2 if len(psutil.Process().cpu_affinity())>=4 else 1
+
         self.gSearch = GridSearchCV(estimator=estimator,
                                        param_grid = params,
                                        cv = 5,
                                        verbose = 1,
-                                       #error_score = 0.0,
-                                       n_jobs = len(psutil.Process().cpu_affinity())//2
-                                       #n_jobs = 12,
+                                       n_jobs = available_processors
                                        )
         self.gSearch.fit(self.att_train,self.tar_train)
 
         best_params = self.gSearch.best_params_
-        #best_score = self.gSearch.best_score_
         best_score = self.gSearch.score(self.att_valid,self.tar_valid)
         print(f'Grid Best Parameters: {[(k,v) for k,v in best_params.items()]}')
         print(f'Grid Best Score: {best_score}')
@@ -212,7 +174,7 @@ class ModelDevelopment():
         :param random: allows for a random see
         """
 
-        self.problem_path = os.path.dirname('./HW4/'+self.problem+'_models/')
+        self.problem_path = os.path.dirname('./Models/'+self.problem+'_models/')
         #creates model storage folder
         time_string = time.strftime('%Y%m%d-%H%M%S')
         model_storage = os.path.join(self.problem_path,'results'+time_string+'/')
@@ -317,7 +279,7 @@ class ModelDevelopment():
         # Set directory for recording
         if self.problem_path==None:
             self.problem = problem
-            self.problem_path = os.path.dirname('./HW4/'+problem+'_models/rfe_models/')
+            self.problem_path = os.path.dirname('./Models/'+problem+'_models/rfe_models/')
 
         # Import data
         self.load_data(problem)
