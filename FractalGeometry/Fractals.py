@@ -1,8 +1,22 @@
-import numpy as np
-import turtle as t
-import math
-import os, io
+###############################################################
+####    
+####    Ryan McArdle
+####    Original: Spring 2016
+####    Refresh: January 2021
+####
+####    A class which utilizes Turtle Graphics to draw various
+####    fractal images. Most algorithms borrowed from "Measure,
+####    Topology, and Fractal Geometry" by Gerald Edgar, 
+####    Springer Publishing, 2nd ed, 2008. These algorithms 
+####    were studied as a part of a directed reading course
+####    focusing on fractal geometry.
+####
+###############################################################
+
 from PIL import Image
+import turtle as t
+import numpy as np
+import io, math, os
 
 class TurtleFractal():
     """
@@ -15,18 +29,38 @@ class TurtleFractal():
         self.setTurtle()
         return
 
-    def setTurtle(self,show_turtle=False):
+
+    def setTurtle(self,show_turtle=False,heading=90):
+        """
+        Sets the Turtle to the origin with a clear screen, then
+        sets speed to max, hides Turtle, and orients the Turtle
+        to the heading. Called after each image is saved.
+
+        :param show_turtle: whether to show the Turtle or not. 
+            Default to False to optimize speed of drawings.
+        :param heading: the initial orientation of the Turtle.
+            90 = North, 0 = East.
+        """
+
+        t.resetscreen()
         t.speed(0)
         if show_turtle is not True:
             t.ht()
-        t.seth(90)
+        t.seth(heading)
         self.heading = t.heading()
         self.origin = t.pos()
 
 
-    def BarnsleyFern(self,depth=10**5):
+    def BarnsleyFern(self,dots=10**5):
         """
-        Draws the Barnsley Fern.
+        Draws the Barnsley Fern using an Iterated Function 
+        System and a stipling technique. Turtle draws a dot at 
+        its location, then randomly selects a transformation 
+        from the IFS to choose a new position and draw another 
+        dot. Upon repetition, the Fern is drawn.
+
+        :param dots: the number of dots to generate in the 
+            image
         """
 
         prob=[.01,.85,.07,.07]
@@ -43,7 +77,7 @@ class TurtleFractal():
         t.speed(0)
 
         i=0
-        while i<depth:
+        while i<dots:
             t.dot(3)
             func=np.random.choice(len(prob),p=prob)
             position=np.dot(ifs[func],t.position())+oth[func]
@@ -55,26 +89,46 @@ class TurtleFractal():
         print ("done")
 
 
-    def BarnsleyLeaf(self, depth=10, size=100, top=True):
+    def BarnsleyLeaf(self, depth=10, size=100):
         """
-        Draws the Barnsley Leaf. 
+        Draws the Barnsley Leaf. This one may be worth viewing
+        with Turtle visible, as the definition leads to 
+        considerable backtracking and rotating in place.
 
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the leaf
         """
+
         if depth<1:
             t.forward(2.0*size)
             t.back(2.0*size)
         else:
             t.forward(size)
-            self.BarnsleyLeaf(depth=depth-2, size=size/2.0,top=False)
+            self.BarnsleyLeaf(depth=depth-2, size=size/2.0)
             t.back(size)
             t.left(45)
-            self.BarnsleyLeaf(depth=depth-1,size=size/math.sqrt(2),top=False)
+            self.BarnsleyLeaf(depth=depth-1,size=size/math.sqrt(2))
             t.right(90)
-            self.BarnsleyLeaf(depth=depth-1,size=size/math.sqrt(2),top=False)
+            self.BarnsleyLeaf(depth=depth-1,size=size/math.sqrt(2))
             t.left(45)
 
 
     def HeighwayDragon(self, depth=12, size=200, parity=1,factor=1/math.sqrt(2)):
+        """
+        Draws the Heighway Dragon. This dragon can be 
+        approximated by drawing a line segment, then 
+        iteratively replacing line segments with the two 
+        short legs of a 45-45-90 triangle in alternating 
+        directions. This non-self-intersecting curve can be 
+        combined with copies of itself to tile the plane (see 
+        HeighwayPinwheel()).
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the dragon
+        :param parity: tracks alternations in the recursive 
+            calls; changes direction of turns
+        :param factor: an overall scaling factor
+        """
         if depth==0:
             t.forward(size)
         else:
@@ -86,6 +140,15 @@ class TurtleFractal():
 
 
     def HeighwayPinwheel(self,depth=6,size=200):
+        """
+        Draws four Heighway Dragons radiating from the origin.
+        These dragons will never intersect, and in the limit 
+        that depth -> inf and size -> inf, the curve fills the 
+        plane.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of each dragon
+        """
 
         num_arms = 4
         for i in range(num_arms):
@@ -97,6 +160,20 @@ class TurtleFractal():
 
 
     def SierpinskiDragon(self, depth=8, size=200, parity=1):
+        """
+        Draws the Sierpinski Dragon. Similar to the Heighway 
+        Dragon, can be approximated with a line segment, then
+        iteratively replacing line segments with one-half of a 
+        hexagon that would span the length of the segment, 
+        alternating directions. In the limit that depth -> inf,
+        the curve approximates the Sierpinski Gasket.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the dragon
+        :param parity: tracks alternations in the recursive 
+            calls; changes direction of turns
+        """
+
         if depth == 0:
             t.forward(size)
         else:
@@ -108,20 +185,37 @@ class TurtleFractal():
             self.SierpinskiDragon(depth=depth-1, size=size/2, parity=-parity)
             t.left(60*parity)
 
-    def SierpinskiGasket(self,depth=8,size=200):
+
+    def SierpinskiGasket(self,depth=9,size=200):
+        """
+        Rotates the Turtle so that SierpinskiDragon() draws a 
+        properly oriented Sierpinski Gasket.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the dragon
+        """
+
         t.right(90)
         t.penup()
-        t.setposition(-size/2,size/2)
+        t.setposition(-size*1.5,-size/2)
         t.pendown()
-        for _ in range(3):
-            self.SierpinskiDragon(depth,size)
-            t.right(60)
-            t.forward(size/(4*depth))
-            t.right(60)
-
+        self.SierpinskiDragon(depth=depth,size=400)
 
 
     def McWortersPentigree(self, depth=5,size=200,offangle=11.82, shrink=1/2.87):
+        """
+        Draws a variation on McWorter's Pentigree. Setting 
+        offangle = 36 and shrink = (3 + sqrt(5))/2 will 
+        generate the original pentigree. The default parameters
+        set here allow for the creation of the Pentadendrite.
+
+        :param depth: the number of recursive calls
+        :param size: the base size of the pentigree
+        :param offangle: an initial and final rotation angle 
+            for each recursive call
+        :param shrink: a scale factor between recursive calls
+        """
+
         if depth==0:
             t.forward(size)
         else:
@@ -139,7 +233,17 @@ class TurtleFractal():
             self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.right(offangle)
 
+
     def Pentadendrite(self, depth=5,size=200):
+        """
+        Draws five copies of the defined variation of 
+        McWorter's Pentigree in a radial fashion to create the 
+        'Pentadendrite' pattern.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of each pentigree.
+        """
+
         t.penup()
         t.setposition(size/(2*math.tan(math.pi/5)),-size/2)
         t.pendown()
@@ -149,10 +253,29 @@ class TurtleFractal():
 
 
     def EisensteinBoundary(self, depth=6, size=200, parity=1):
+        """
+        Draws a portion of the boundary of the Eisenstein 
+        iterated function system.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        :param parity: tracks alternations in the recursive 
+            calls; changes direction of turns
+        """
         self.EBForward(depth=depth, size=size, parity=parity)
         self.EBBackwards(depth=depth, size=size, parity=parity)
 
+
     def EBForward(self, depth=10, size=200, parity=1):
+        """
+        Support function for drawing the Eisenstein Boundary.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        :param parity: tracks alternations in the recursive 
+            calls; changes direction of turns
+        """
+
         if depth == 0:
             t.forward(size)
         else:
@@ -163,7 +286,17 @@ class TurtleFractal():
             t.left(60*parity)
             self.EBForward(depth=depth-1, size=size/2, parity=-parity)
 
+
     def EBBackwards(self, depth=10, size=200, parity=1):
+        """
+        Support function for drawing the Eisenstein Boundary.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        :param parity: tracks alternations in the recursive 
+            calls; changes direction of turns
+        """
+
         if depth == 0:
             t.forward(size)
         else:
@@ -174,7 +307,15 @@ class TurtleFractal():
             self.EBForward(depth=depth-1, size=size/2, parity=-parity)
             t.right(60*parity)
 
+
     def EisensteinBoundaryFull(self, depth=6, size=200):
+        """
+        Draws the full Eisenstein Boundary from six portions.
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        """
+
         t.penup()
         t.setposition(math.sqrt(3)*size,-size)
         t.pendown()
@@ -184,6 +325,17 @@ class TurtleFractal():
 
 
     def KochCurve(self, depth=6, size=200):
+        """
+        Draws the Koch Curve. This curve is approximated by 
+        drawing a line, then replacing the middle third of the
+        line with two sides of an equilateral triangle, and 
+        iteratively repeating. This curve is used to create 
+        KochSnowFlake().
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        """
+
         if depth == 0:
             t.forward(size)
         else:
@@ -195,7 +347,16 @@ class TurtleFractal():
             t.left(60)
             self.KochCurve(depth=depth-1, size=size/3)
 
+
     def KochSnowFlake(self, depth=6, size=200):
+        """
+        Draws three copies of the Koch Curve in order to create
+        the boundary known as the Koch Snowflake. 
+
+        :param depth: the number of recursive calls to be made
+        :param size: the base size of the boundary
+        """
+
         t.penup()
         t.setposition(-math.sqrt(3)*size/4,-size/2)
         t.pendown()
@@ -203,7 +364,45 @@ class TurtleFractal():
             self.KochCurve(depth,size)
             t.right(120)
 
+
+    def FibonacciSpiral(self):
+        """
+        Approximates the Golden Ratio by calculating 
+        Fibonacci Numbers and drawing a spiral based upon those
+        values. Terminates when the computer can no longer 
+        discern the approximated ratio from the value 
+        (1+sqrt(5))/2.
+        """
+
+        iteration = 0
+        a=0
+        b=1
+        c = a+b
+        ratio = c/b
+        phi = (1+math.sqrt(5))/2
+
+        while (abs(phi-ratio)>0):
+            scale = 0.01
+            for i in range(0,4):
+                t.forward(c*scale)
+                t.left(90)
+            t.circle(c*scale,90)
+            ratio = (c/b)
+            print("Number: "+str(c).rjust(10)+"     Ratio: "+str(ratio).rjust(10))
+            iteration+=1
+            a = b
+            b = c
+            c = a+b
+          
+            
     def saveImage(self,file_name):
+        """
+        Saves the current canvas as a .png image and resets the
+        Turtle for another drawing.
+
+        :param file_name: the name to save the file as
+        """
+
         cur_dir = os.getcwd()
         rec_dir = os.path.join(cur_dir,'Images\\')
         if not os.path.exists(rec_dir):
@@ -213,35 +412,48 @@ class TurtleFractal():
         with Image.open(file_name+'.ps') as img:
             img.save(os.path.join(rec_dir,file_name+'.png'), 'png', dpi=(1000,1000))
         os.remove(file_name+'.ps')
-        t.resetscreen()
         self.setTurtle()
+
 
 
 def main():
     tf = TurtleFractal()
 
     depths = 8
+    sizes = 400
 
     tf.BarnsleyFern()
     tf.saveImage('BarnsleyFern')
 
-    tf.BarnsleyLeaf(depth=depths)
+    tf.BarnsleyLeaf(depth=depths+2, size=sizes)
     tf.saveImage('BarnsleyLeaf')
 
-    tf.HeighwayPinwheel(depth=depths)
+    tf.HeighwayPinwheel(depth=depths+4, size=sizes)
     tf.saveImage('HeighwayPinwheel')
 
-    tf.SierpinskiGasket(depth=depths)
+    ############
+    #tf.SierpinskiDragon(depth=8, size=400)
+    ############
+
+    tf.SierpinskiGasket(depth=depths, size=sizes)
     tf.saveImage('SierpinskiGasket')
 
-    tf.Pentadendrite(depth=depths/2)
+    tf.Pentadendrite(depth=depths/2, size=sizes)
     tf.saveImage('Pentadendrite')
 
-    tf.EisensteinBoundaryFull(depth=depths)
-    tf.saveImage('EisensteinBoundaryFull')
+    ###########
+    #tf.EisensteinBoundaryFull(depth=4)
+    #tf.saveImage('EisensteinBoundary')
+    ##########
 
-    tf.KochSnowFlake(depth=depths)
+    tf.KochSnowFlake(depth=6, size=400)
     tf.saveImage('KochSnowFlake')
+
+    ############
+    #tf.FibonacciSpiral()
+    #tf.saveImage('FibonacciSpiral')
+    #############
+
 
 
 if __name__ == '__main__':
