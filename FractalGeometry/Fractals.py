@@ -1,6 +1,8 @@
 import numpy as np
 import turtle as t
 import math
+import os, io
+from PIL import Image
 
 class TurtleFractal():
     """
@@ -10,17 +12,19 @@ class TurtleFractal():
     """
 
     def __init__(self,show_turtle=False):
+        self.setTurtle()
+        return
+
+    def setTurtle(self,show_turtle=False):
         t.speed(0)
         if show_turtle is not True:
             t.ht()
         t.seth(90)
         self.heading = t.heading()
         self.origin = t.pos()
-        # t.exitonclick()
-        return
 
 
-    def BarnsleyFern(self):
+    def BarnsleyFern(self,depth=10**5):
         """
         Draws the Barnsley Fern.
         """
@@ -39,7 +43,7 @@ class TurtleFractal():
         t.speed(0)
 
         i=0
-        while i<10**5:
+        while i<depth:
             t.dot(3)
             func=np.random.choice(len(prob),p=prob)
             position=np.dot(ifs[func],t.position())+oth[func]
@@ -49,10 +53,6 @@ class TurtleFractal():
             i+=1
 
         print ("done")
-        ts=t.getcanvas()
-        ts.postscript(file="BarnsFern.ps", colormode="color")
-
-        t.exitonclick()
 
 
     def BarnsleyLeaf(self, depth=10, size=100, top=True):
@@ -60,19 +60,13 @@ class TurtleFractal():
         Draws the Barnsley Leaf. 
 
         """
-        # if top==True:
-        #     t.left(90)
         if depth<1:
             t.forward(2.0*size)
-            # t.penup()
             t.back(2.0*size)
-            # t.pendown()
         else:
             t.forward(size)
             self.BarnsleyLeaf(depth=depth-2, size=size/2.0,top=False)
-            # t.penup()
             t.back(size)
-            # t.pendown()
             t.left(45)
             self.BarnsleyLeaf(depth=depth-1,size=size/math.sqrt(2),top=False)
             t.right(90)
@@ -91,15 +85,14 @@ class TurtleFractal():
             t.left(parity*45)
 
 
-    def HeighwayPinwheel(self,):
+    def HeighwayPinwheel(self,depth=6,size=200):
 
         num_arms = 4
-        # heading = self.heading
         for i in range(num_arms):
             t.setposition(self.origin)
             t.seth(self.heading+(360.0/num_arms)*i)
             t.pendown()
-            self.HeighwayDragon(depth=6)
+            self.HeighwayDragon(depth,size)
             t.penup()
 
 
@@ -115,24 +108,44 @@ class TurtleFractal():
             self.SierpinskiDragon(depth=depth-1, size=size/2, parity=-parity)
             t.left(60*parity)
 
+    def SierpinskiGasket(self,depth=8,size=200):
+        t.right(90)
+        t.penup()
+        t.setposition(-size/2,size/2)
+        t.pendown()
+        for _ in range(3):
+            self.SierpinskiDragon(depth,size)
+            t.right(60)
+            t.forward(size/(4*depth))
+            t.right(60)
 
-    def Pentadendrite(self, depth=5,size=200,offangle=11.82, shrink=1/2.87):
+
+
+    def McWortersPentigree(self, depth=5,size=200,offangle=11.82, shrink=1/2.87):
         if depth==0:
             t.forward(size)
         else:
             t.left(offangle)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.left(72)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.right(72)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.right(144)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.left(72)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.left(72)
-            self.Pentadendrite(depth=depth-1, size=size*shrink)
+            self.McWortersPentigree(depth=depth-1, size=size*shrink)
             t.right(offangle)
+
+    def Pentadendrite(self, depth=5,size=200):
+        t.penup()
+        t.setposition(size/(2*math.tan(math.pi/5)),-size/2)
+        t.pendown()
+        for _ in range(5):
+            self.McWortersPentigree(depth,size)
+            t.left(360//5)
 
 
     def EisensteinBoundary(self, depth=6, size=200, parity=1):
@@ -161,6 +174,14 @@ class TurtleFractal():
             self.EBForward(depth=depth-1, size=size/2, parity=-parity)
             t.right(60*parity)
 
+    def EisensteinBoundaryFull(self, depth=6, size=200):
+        t.penup()
+        t.setposition(math.sqrt(3)*size,-size)
+        t.pendown()
+        for _ in range(6):
+            self.EisensteinBoundary(depth, size)
+            t.left(60)
+
 
     def KochCurve(self, depth=6, size=200):
         if depth == 0:
@@ -174,11 +195,53 @@ class TurtleFractal():
             t.left(60)
             self.KochCurve(depth=depth-1, size=size/3)
 
+    def KochSnowFlake(self, depth=6, size=200):
+        t.penup()
+        t.setposition(-math.sqrt(3)*size/4,-size/2)
+        t.pendown()
+        for _ in range(3):
+            self.KochCurve(depth,size)
+            t.right(120)
+
+    def saveImage(self,file_name):
+        cur_dir = os.getcwd()
+        rec_dir = os.path.join(cur_dir,'Images\\')
+        if not os.path.exists(rec_dir):
+            os.mkdir(rec_dir)
+        ts=t.getcanvas()
+        psimage = ts.postscript(file= file_name+'.ps', colormode="color")
+        with Image.open(file_name+'.ps') as img:
+            img.save(os.path.join(rec_dir,file_name+'.png'), 'png', dpi=(1000,1000))
+        os.remove(file_name+'.ps')
+        t.resetscreen()
+        self.setTurtle()
+
 
 def main():
     tf = TurtleFractal()
-    tf.KochCurve()
-    t.exitonclick()
+
+    depths = 8
+
+    tf.BarnsleyFern()
+    tf.saveImage('BarnsleyFern')
+
+    tf.BarnsleyLeaf(depth=depths)
+    tf.saveImage('BarnsleyLeaf')
+
+    tf.HeighwayPinwheel(depth=depths)
+    tf.saveImage('HeighwayPinwheel')
+
+    tf.SierpinskiGasket(depth=depths)
+    tf.saveImage('SierpinskiGasket')
+
+    tf.Pentadendrite(depth=depths/2)
+    tf.saveImage('Pentadendrite')
+
+    tf.EisensteinBoundaryFull(depth=depths)
+    tf.saveImage('EisensteinBoundaryFull')
+
+    tf.KochSnowFlake(depth=depths)
+    tf.saveImage('KochSnowFlake')
 
 
 if __name__ == '__main__':
