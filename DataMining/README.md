@@ -1,5 +1,5 @@
 # Data Mining
-This directory showcases the management of large amounts data and the production of various decision making models using said data.
+This directory showcases the production of various decision making models using large amounts of data.
 
 ## [Model Development](ModelDevelopment/)
 This directory contains a [ModelDevelopment](ModelDevelopment/ModelDevelopment.py) class that is capable of generating predictive models for both the [Wisconsin Breast Cancer Data Set][1] (a classification model) and a sample of data from the [NAM Forecast System][2] from 2017-2018 associated with a timeseries of detected solar radiation (a regression model).
