@@ -1,0 +1,13 @@
+Overall Best Model: {'validation score': 0.9710144927536232, 'estimator': RandomForestClassifier(), 'test_size': 0.15, 'class_weight': None, 'criterion': 'entropy', 'max_features': 'log2', 'min_samples_split': 2, 'n_estimators': 75, 'test score': 0.9912280701754386}
+
+Overall Best Test Score: 0.9912280701754386
+
+
+Best Models per Estimator: 
+
+{'validation score': 0.9912280701754386, 'estimator': LogisticRegression(), 'test_size': 0.25, 'C': 0.5, 'class_weight': None, 'penalty': 'l2', 'solver': 'liblinear', 'test score': 0.9912280701754386}
+
+{'validation score': 0.9736842105263158, 'estimator': Perceptron(), 'test_size': 0.25, 'alpha': 5e-05, 'class_weight': None, 'penalty': 'l1', 'shuffle': True, 'test score': 0.9473684210526315}
+
+{'validation score': 0.9710144927536232, 'estimator': RandomForestClassifier(), 'test_size': 0.15, 'class_weight': None, 'criterion': 'entropy', 'max_features': 'log2', 'min_samples_split': 2, 'n_estimators': 75, 'test score': 0.9912280701754386}
+

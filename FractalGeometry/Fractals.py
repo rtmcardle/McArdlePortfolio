@@ -77,13 +77,14 @@ class TurtleFractal():
         t.speed(0)
 
         i=0
+        choices = len(prob)
         while i<dots:
             t.dot(3)
-            func=np.random.choice(len(prob),p=prob)
+            func=np.random.choice(choices,p=prob)
             position=np.dot(ifs[func],t.position())+oth[func]
             t.setpos(position)
-            if i%100==0:
-                print (i)
+            #if i%100==0:
+            #    print (i)
             i+=1
 
         print ("done")
@@ -195,11 +196,13 @@ class TurtleFractal():
         :param size: the base size of the dragon
         """
 
-        t.right(90)
+        t.left(30)
         t.penup()
-        t.setposition(-size*1.5,-size/2)
+        t.setposition(size,-size*2/3)
         t.pendown()
-        self.SierpinskiDragon(depth=depth,size=400)
+        for _ in range(1):
+            self.SierpinskiDragon(depth=depth+1,size=800)
+            t.right(120)
 
 
     def McWortersPentigree(self, depth=5,size=200,offangle=11.82, shrink=1/2.87):
@@ -422,14 +425,15 @@ def main():
     depths = 8
     sizes = 400
 
-    tf.BarnsleyFern()
-    tf.saveImage('BarnsleyFern')
+    #tf.BarnsleyFern()
+    #tf.saveImage('BarnsleyFern')
 
-    tf.BarnsleyLeaf(depth=depths+2, size=sizes)
-    tf.saveImage('BarnsleyLeaf')
+    #t.setpos(0,-275)
+    #tf.BarnsleyLeaf(depth=depths+2, size=sizes)
+    #tf.saveImage('BarnsleyLeaf')
 
-    tf.HeighwayPinwheel(depth=depths+4, size=sizes)
-    tf.saveImage('HeighwayPinwheel')
+    #tf.HeighwayPinwheel(depth=depths+4, size=sizes)
+    #tf.saveImage('HeighwayPinwheel')
 
     ############
     #tf.SierpinskiDragon(depth=8, size=400)
@@ -438,16 +442,16 @@ def main():
     tf.SierpinskiGasket(depth=depths, size=sizes)
     tf.saveImage('SierpinskiGasket')
 
-    tf.Pentadendrite(depth=depths/2, size=sizes)
-    tf.saveImage('Pentadendrite')
+    #tf.Pentadendrite(depth=depths/2+2, size=sizes+100)
+    #tf.saveImage('Pentadendrite')
 
     ###########
     #tf.EisensteinBoundaryFull(depth=4)
     #tf.saveImage('EisensteinBoundary')
     ##########
 
-    tf.KochSnowFlake(depth=6, size=400)
-    tf.saveImage('KochSnowFlake')
+    #tf.KochSnowFlake(depth=6, size=400*1.5)
+    #tf.saveImage('KochSnowFlake')
 
     ############
     #tf.FibonacciSpiral()
