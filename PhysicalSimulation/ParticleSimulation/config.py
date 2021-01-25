@@ -17,7 +17,10 @@ selected_particle = None
 ## Physical simulation configuration
 mass_of_air = 0.1                                                       # Determines amount of drag on the particles
 elasticity = 0.75                                                       # Determines loss of speed in bounces and collisions
-gravity = (math.pi, 9.8/FPS)                                            # Vector quantity of gravity with (direction, magnitude)
+gravity_switch = True													# Allows switching gravity on and off
+gravity_angle = math.pi													# Initialize gravity downwards
+gravity_force = 9.8														# Initialize gravity force
+gravity = (gravity_angle, gravity_switch*gravity_force/FPS)             # Vector quantity of gravity with (direction, magnitude)
 number_of_particles = 500                                               # Number of particles in simulation
 min_density = 1
 max_density = 20
