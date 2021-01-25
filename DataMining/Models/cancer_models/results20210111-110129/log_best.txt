@@ -1,0 +1,13 @@
+Overall Best Model: {'validation score': 0.978021978021978, 'estimator': Perceptron(), 'test_size': 0.2, 'alpha': 5e-05, 'class_weight': 'balanced', 'penalty': 'l1', 'shuffle': True, 'test score': 0.9649122807017544}
+
+Overall Best Test Score: 0.9649122807017544
+
+
+Best Models per Estimator: 
+
+{'validation score': 0.9902439024390244, 'estimator': LogisticRegression(), 'test_size': 0.45000000000000007, 'C': 0.5, 'class_weight': 'balanced', 'penalty': 'l1', 'solver': 'saga', 'test score': 0.9473684210526315}
+
+{'validation score': 0.978021978021978, 'estimator': Perceptron(), 'test_size': 0.2, 'alpha': 5e-05, 'class_weight': 'balanced', 'penalty': 'l1', 'shuffle': True, 'test score': 0.9649122807017544}
+
+{'validation score': 0.9824561403508771, 'estimator': RandomForestClassifier(), 'test_size': 0.25, 'class_weight': None, 'criterion': 'entropy', 'max_features': 'log2', 'min_samples_split': 2, 'n_estimators': 50, 'test score': 0.9473684210526315}
+
