@@ -432,31 +432,25 @@ def main():
     #tf.BarnsleyLeaf(depth=depths+2, size=sizes)
     #tf.saveImage('BarnsleyLeaf')
 
-    #tf.HeighwayPinwheel(depth=depths+4, size=sizes)
-    #tf.saveImage('HeighwayPinwheel')
+    tf.HeighwayPinwheel(depth=depths+4, size=sizes)
+    tf.saveImage('HeighwayPinwheel')
 
-    ############
     #tf.SierpinskiDragon(depth=8, size=400)
-    ############
 
-    tf.SierpinskiGasket(depth=depths, size=sizes)
-    tf.saveImage('SierpinskiGasket')
+    #tf.SierpinskiGasket(depth=depths, size=sizes)
+    #tf.saveImage('SierpinskiGasket')
 
     #tf.Pentadendrite(depth=depths/2+2, size=sizes+100)
     #tf.saveImage('Pentadendrite')
 
-    ###########
     #tf.EisensteinBoundaryFull(depth=4)
     #tf.saveImage('EisensteinBoundary')
-    ##########
 
     #tf.KochSnowFlake(depth=6, size=400*1.5)
     #tf.saveImage('KochSnowFlake')
 
-    ############
     #tf.FibonacciSpiral()
     #tf.saveImage('FibonacciSpiral')
-    #############
 
 
 
