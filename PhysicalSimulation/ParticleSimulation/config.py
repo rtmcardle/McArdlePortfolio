@@ -1,6 +1,7 @@
 import math
 import pygame
 import random
+import numpy as np
 
 ## Pygame configuration
 pygame.init()
@@ -20,6 +21,7 @@ elasticity = 0.75                                                       # Determ
 gravity_switch = True													# Allows switching gravity on and off
 gravity_angle = math.pi													# Initialize gravity downwards
 gravity_force = 9.8														# Initialize gravity force
+gravity_delta = gravity_force/FPS/25
 gravity = (gravity_angle, gravity_switch*gravity_force/FPS)             # Vector quantity of gravity with (direction, magnitude)
 number_of_particles = 500                                               # Number of particles in simulation
 min_density = 1

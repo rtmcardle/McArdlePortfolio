@@ -12,6 +12,9 @@ def addVectors(angle1, length1, angle2, length2):
 
     return (angle, length)
 
+def maxVector(vector,max):
+    return (vector[0], max)
+
 
 
 def findParticle(particles, x, y):

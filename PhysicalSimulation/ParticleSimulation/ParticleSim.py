@@ -2,6 +2,7 @@ import pygame, random, math, sys
 import config, util
 from Particle import Particle
 from QuadTree import QuadTree
+import numpy as np
 
 
 def main():
@@ -21,8 +22,11 @@ def main():
                 ## De-select particle on mouse up
                 config.selected_particle = None
             elif event.type == pygame.KEYDOWN:
-                ## Changes direction of gravity with arrow key press
                 key = pygame.key.get_pressed()
+                
+                ## Changes direction of gravity with arrow key press
+                ## If gravity_switch == False, applies a force
+                #if config.gravity_switch:
                 if key[pygame.K_UP] != 0:
                     #config.gravity = (math.pi, -9.8/config.FPS)
                     config.gravity_angle = 0
@@ -32,9 +36,21 @@ def main():
                     config.gravity_angle = math.pi/2
                 elif key[pygame.K_LEFT] != 0:
                     config.gravity_angle = 3*math.pi/2
-                elif key[pygame.K_SPACE] != 0:
+                ## Switches gravity on/off
+                if key[pygame.K_SPACE] != 0:
                     config.gravity_switch = not config.gravity_switch
-                config.gravity = (config.gravity_angle, config.gravity_switch*config.gravity_force/config.FPS)
+                    if config.gravity_switch:
+                        config.gravity = (config.gravity_angle, config.gravity_switch*config.gravity_force/config.FPS)
+                    else:
+                        config.gravity = (0,0)
+                ## If gravity is not on, increment the force in the direction
+                if not config.gravity_switch:
+                    config.gravity = util.addVectors(config.gravity[0], config.gravity[1], config.gravity_angle, config.gravity_delta)
+                    if config.gravity[1] >= config.gravity_force/config.FPS: config.gravity = util.maxVector(config.gravity,config.gravity_force/config.FPS)
+                    print(config.gravity)
+                ## If gravity is on, set the direction of gravity
+                else:
+                    config.gravity = (config.gravity_angle, config.gravity_switch*config.gravity_force/config.FPS)
 
             
 
