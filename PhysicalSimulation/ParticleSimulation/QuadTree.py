@@ -6,13 +6,13 @@ class QuadTree(object):
         level: set to zero for "trunk" of quadtree
         rect: should be entire display for "trunk" of quadtree
         particles: list of all particles for collision testing'''
-        self.maxlevel = 10#max number of subdivisions
-        self.level = level#current level of subdivision
-        self.maxparticles = 10#max number of particles without subdivision
-        self.rect = rect#pygame rect object
-        self.particles = particles#list of particles
-        self.color = color#color of box if displayed
-        self.branches = []#empty list that is filled with four branches if subdivided
+        self.maxlevel = 20                              #max number of subdivisions
+        self.level = level                              #current level of subdivision
+        self.maxparticles = 10                          #max number of particles without subdivision
+        self.rect = rect                                #pygame rect object
+        self.particles = particles                      #list of particles
+        self.color = color                              #color of box if displayed
+        self.branches = []                              #empty list that is filled with four branches if subdivided
         self.display_tree = display_tree
 
     def get_rect(self):
@@ -22,7 +22,7 @@ class QuadTree(object):
     def subdivide(self):
         '''Subdivides quadtree into four branches'''
         for rect in self.rect_quad_split(self.rect):
-            branch = QuadTree(self.level+1, rect, [], (self.color[0]+30,self.color[1],self.color[2]))
+            branch = QuadTree(self.level+1, rect, [], (self.color[0],self.color[1],self.color[2]+30),display_tree=self.display_tree)
             self.branches.append(branch)
 
     def rect_quad_split(self, rect):
@@ -30,10 +30,10 @@ class QuadTree(object):
         w=rect.width/2.0
         h=rect.height/2.0
         rl=[]
-        rl.append(pygame.Rect(int(rect.left), int(rect.top), int(w), int(h)))
-        rl.append(pygame.Rect(int(rect.left+w), int(rect.top), int(w), int(h)))
-        rl.append(pygame.Rect(int(rect.left), int(rect.top+h), int(w), int(h)))
-        rl.append(pygame.Rect(int(rect.left+w), int(rect.top+h), int(w), int(h)))
+        rl.append(pygame.Rect(rect.left, rect.top, w, h))
+        rl.append(pygame.Rect(rect.left+w, rect.top, w, h))
+        rl.append(pygame.Rect(rect.left, rect.top+h, w, h))
+        rl.append(pygame.Rect(rect.left+w, rect.top+h, w, h))
         return rl
 
     def add_particle(self, particle):
