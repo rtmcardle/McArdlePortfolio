@@ -6,7 +6,7 @@ import numpy as np
 ## Pygame configuration
 pygame.init()
 BGCOLOR = (255,255,255)                                                 # Background color for simulation
-DISPLAYWIDTH, DISPLAYHEIGHT = 1280, 720                                 # Resolution of simulation
+DISPLAYWIDTH, DISPLAYHEIGHT = 1920, 1080                                 # Resolution of simulation
 DISPLAYSURF = pygame.display.set_mode((DISPLAYWIDTH, DISPLAYHEIGHT))    # Creates display surface
 FPSCLOCK = pygame.time.Clock()                                          # FPS clock to control game speed
 FPS = 120                                                               # Sets to 120FPS
@@ -16,9 +16,9 @@ selected_particle = None
 
 
 ## Physical simulation configuration
-mass_of_air = 0.1                                                       # Determines amount of drag on the particles
-elasticity = 0.75                                                       # Determines loss of speed in bounces and collisions
-gravity_switch = True													# Allows switching gravity on and off
+mass_of_air = 0                                                       # Determines amount of drag on the particles
+elasticity = 0.9                                                     # Determines loss of speed in bounces and collisions
+gravity_switch = False													# Allows switching gravity on and off
 gravity_angle = math.pi													# Initialize gravity downwards
 gravity_force = 9.8														# Initialize gravity force
 gravity_delta = gravity_force/FPS/25
