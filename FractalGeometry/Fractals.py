@@ -265,9 +265,10 @@ class TurtleFractal():
         :param parity: tracks alternations in the recursive 
             calls; changes direction of turns
         """
-        self.EBForward(depth=depth, size=size, parity=parity)
+        
+        self.EBForward(depth=depth, size=size, parity=-parity)
         self.EBBackwards(depth=depth, size=size, parity=parity)
-
+        
 
     def EBForward(self, depth=10, size=200, parity=1):
         """
@@ -320,11 +321,11 @@ class TurtleFractal():
         """
 
         t.penup()
-        t.setposition(math.sqrt(3)*size,-size)
+        t.setposition(math.sqrt(3)*size/3,-size)
         t.pendown()
-        for _ in range(6):
+        for _ in range(3):
             self.EisensteinBoundary(depth, size)
-            t.left(60)
+            t.left(120)
 
 
     def KochCurve(self, depth=6, size=200):
@@ -432,8 +433,8 @@ def main():
     #tf.BarnsleyLeaf(depth=depths+2, size=sizes)
     #tf.saveImage('BarnsleyLeaf')
 
-    tf.HeighwayPinwheel(depth=depths+4, size=sizes)
-    tf.saveImage('HeighwayPinwheel')
+    #tf.HeighwayPinwheel(depth=depths+4, size=sizes)
+    #tf.saveImage('HeighwayPinwheel')
 
     #tf.SierpinskiDragon(depth=8, size=400)
 
@@ -443,8 +444,8 @@ def main():
     #tf.Pentadendrite(depth=depths/2+2, size=sizes+100)
     #tf.saveImage('Pentadendrite')
 
-    #tf.EisensteinBoundaryFull(depth=4)
-    #tf.saveImage('EisensteinBoundary')
+    tf.EisensteinBoundaryFull(depth=depths)
+    tf.saveImage('EisensteinBoundary1')
 
     #tf.KochSnowFlake(depth=6, size=400*1.5)
     #tf.saveImage('KochSnowFlake')
