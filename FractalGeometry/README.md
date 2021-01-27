@@ -4,7 +4,7 @@ This directory showcases the drawing of a number of recursively defined and self
 Each of the images and their relevant methods are discussed below.
 
 ## [Barnsley Fern](Images/BarnsFern.png)
-This iterated function system begins at a point near the bottom-middle of the screen, then chooses with random weight a transformation to translate the location of the point. At each location, the turtle 'stamps' the canvas beneath it and leaving a dot, imitating a stipling technique. The transformations are defined such that the resulting collection of points as the number of transformations goes to infinity is a fern-shaped area known as the Barnsley Fern. 
+This iterated function system begins at a point near the bottom-middle of the screen, then chooses with random weight a transformation to translate the location of the point. At each location, the turtle 'stamps' the canvas beneath it and leaving a dot, imitating a stipling technique. The transformations are defined such that the resulting collection of points as the number of transformations goes to infinity is a fern-shaped area known as the [Barnsley Fern][7]. 
 
 ## [Barnsley Leaf](Images/BarnsleyLeaf.png)
 This method defines a straight-line drawing implementation of the Barnsley Leaf. This method is interesting to watch with the turtle visible, as it often retraces its steps and rotates quite a lot to achieve this image.
@@ -38,3 +38,4 @@ This curve approximates the [Sierpinski Gasket][6], which can be derived by begi
 [4]: https://en.wikipedia.org/wiki/Koch_snowflake
 [5]: https://larryriddle.agnesscott.org/ifs/pentigre/pentigre2.htm
 [6]: https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle
+[7]: https://en.wikipedia.org/wiki/Barnsley_fern
