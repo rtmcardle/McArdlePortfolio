@@ -14,7 +14,8 @@ class Particle():
         self.mass = self.density * math.pi * self.radius**2
         self.color = (100+155*(1-self.density/config.max_density), 0, 0)
         self.thickness = 0
-        self.speed = random.random()#magnitude of velocity vector
+        self.momentum = random.uniform(0,10000.0)#magnitude of velocity vector
+        self.speed = self.momentum/self.mass
         self.angle = random.uniform(0, math.pi*2)#direction of velocity vector
         
         self.drag = (self.mass/(self.mass + config.mass_of_air)) ** self.radius if config.mass_of_air != 0 else 1

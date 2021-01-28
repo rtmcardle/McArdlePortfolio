@@ -6,7 +6,7 @@ import numpy as np
 
 
 def main():
-    particles = [Particle(radius = 10, density=5) for _ in range(config.number_of_particles)]  
+    particles = [Particle(radius=10,density=10) for _ in range(config.number_of_particles)]  
 
     ## Game Loop
     while True:                                                                                         
@@ -69,7 +69,8 @@ def main():
         tree.update(config.DISPLAYSURF)
 
         ## Updates and draws particles
-        for particle in particles: particle.update()
+        for particle in particles: 
+            particle.update()
         
         ## Update display
         config.FPSCLOCK.tick(config.FPS)

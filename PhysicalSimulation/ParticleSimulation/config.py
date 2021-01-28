@@ -17,7 +17,7 @@ selected_particle = None
 
 ## Physical simulation configuration
 mass_of_air = 0                                                       # Determines amount of drag on the particles
-elasticity = 0.9                                                     # Determines loss of speed in bounces and collisions
+elasticity = 1.0                                                     # Determines loss of speed in bounces and collisions
 gravity_switch = False													# Allows switching gravity on and off
 gravity_angle = math.pi													# Initialize gravity downwards
 gravity_force = 9.8														# Initialize gravity force
