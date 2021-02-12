@@ -66,4 +66,12 @@
 
 ###############################################################################
 PhysicalSimulation/AdaptedFromPhET/* linguist-vendored
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+PhysicalSimulation/AdaptedFromPhET/README.md linguist-vendored
+PhysicalSimulation/AdaptedFromPhET/vector-addition/js/common/VectorAdditionConstants.js linguist-vendored
+PhysicalSimulation/AdaptedFromPhET/vector-addition/js/common/model/Vector.js linguist-vendored
+SearchAndLogic/*/aima/* linguist-vendored
+
 >>>>>>> Stashed changes
