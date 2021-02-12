@@ -1,5 +1,7 @@
 Vector Addition
 =============
+&ast;&ast; Original PhET README content &ast;&ast;
+
 "Vector Addition" is an educational simulation in HTML5, by <a href="https://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
 at the University of Colorado Boulder.
 For a description of this simulation, associated resources, and a link to the published version,
