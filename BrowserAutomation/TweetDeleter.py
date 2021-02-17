@@ -15,7 +15,7 @@ import sys
 
 
 
-class TweetDeckDeleter():
+class TweetDeleter():
     """
     A class which automates the deletion of tweets and retweets
     for a Twitter account back a given amount of time.
@@ -293,7 +293,7 @@ class MenuOutOfView(Exception):
 
 
 def main():
-    deleter = TweetDeckDeleter()
+    deleter = TweetDeleter()
     deleter.attempt_login()
     deleter.delete_posts()
     
