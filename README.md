@@ -1,4 +1,5 @@
 # Ryan McArdle Portfolio
+Note: This repository showcases work completed during my time in academia. Significant projects completed since entering the workforce are not publically available at this time. 
 
 This repository showcases programming work completed and maintained by Ryan McArdle. Each directory in the repository contains codes which focus on a given field of application. The bulk of the code is written in Python. For a sample of Java code, please check the [Search and Logic](SearchAndLogic/) directory.
 
